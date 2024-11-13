@@ -62,7 +62,7 @@ publishing {
 
 sonar {
   properties {
-    property("sonar.projectKey", "gradle-lib-template")
+    property("sonar.projectKey", "hnd14_chessboard")
     property("sonar.organization", "hnd14")
     property("sonar.host.url", "https://sonarcloud.io")
   }
