@@ -28,6 +28,12 @@ dependencies {
 
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation(libs.guava)
+
+    compileOnly ("org.projectlombok:lombok:1.18.34")
+	annotationProcessor ("org.projectlombok:lombok:1.18.34")
+	
+	testCompileOnly ("org.projectlombok:lombok:1.18.34")
+	testAnnotationProcessor ("org.projectlombok:lombok:1.18.34")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
