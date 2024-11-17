@@ -12,13 +12,14 @@ import com.hnd14.chess.piece.PieceTypeManager;
 import com.hnd14.chess.piece.Side;
 import com.hnd14.chess.position.File;
 import com.hnd14.chess.position.Rank;
+import com.hnd14.game.Position;
 
-class GameStateImplTest {
+class ChessGameStateImplTest {
     static PieceTypeManager pieceTypeManager = new PieceTypeManager();
-    Position c3 = new Position(Rank.THIRD, File.C);
-    Position d4 = new Position(Rank.FOURTH, File.D);
-    Position h8 = new Position(Rank.EIGHTH, File.H);
-    GameStateImpl gameState;
+    Position c3 = new ChessPosition(Rank.THIRD, File.C);
+    Position d4 = new ChessPosition(Rank.FOURTH, File.D);
+    Position h8 = new ChessPosition(Rank.EIGHTH, File.H);
+    ChessGameStateImpl gameState;
     @BeforeAll
     static void setupBeforeAll () {
         pieceTypeManager.register("Bishop");
@@ -29,7 +30,7 @@ class GameStateImplTest {
 
     @BeforeEach
     void setup() {
-        gameState = GameStateImpl
+        gameState = ChessGameStateImpl
             .builder()
             .addPiece(new ChessPiece(pieceTypeManager.fromString("N"), Side.BLACK), c3)
             .addPiece(new ChessPiece(pieceTypeManager.fromString("B"), Side.WHITE), d4)
@@ -48,7 +49,7 @@ class GameStateImplTest {
 
     @Test
     void testToBuilder_removePiece() {
-        GameStateImpl newGameState = gameState.toBuilder()
+        ChessGameStateImpl newGameState = gameState.toBuilder()
             .removePiece(c3)
             .addPiece(new ChessPiece(pieceTypeManager.fromString("B"), Side.BLACK), h8)
             .build();

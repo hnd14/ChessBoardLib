@@ -4,10 +4,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.hnd14.game.GameState;
+import com.hnd14.game.Position;
 
-public class GameStateImpl implements GameState {
+public class ChessGameStateImpl implements GameState {
     private Map<Position, ChessPiece> state;
-    private GameStateImpl(Map<Position, ChessPiece> state) {
+    private ChessGameStateImpl(Map<Position, ChessPiece> state) {
         this.state = state;
     }
 
@@ -21,6 +22,11 @@ public class GameStateImpl implements GameState {
         return state.get(position);
     }
 
+    @Override
+    public boolean hasPosition(Position position) {
+        return position instanceof ChessPosition;
+    } 
+
     public static GameStateBuilder builder() {
         return new GameStateBuilder();
     }
@@ -28,7 +34,7 @@ public class GameStateImpl implements GameState {
     public GameStateBuilder toBuilder() {
         return new GameStateBuilder(state);
     }
-
+    
     public static class GameStateBuilder {
         private Map<Position, ChessPiece> state = new ConcurrentHashMap<>();
 
@@ -39,8 +45,8 @@ public class GameStateImpl implements GameState {
             this.state = new ConcurrentHashMap<>(state);
         }
 
-        public GameStateImpl build() {
-            return new GameStateImpl(state);
+        public ChessGameStateImpl build() {
+            return new ChessGameStateImpl(state);
         }
 
         public GameStateBuilder addPiece(ChessPiece piece, Position position) {
@@ -52,5 +58,6 @@ public class GameStateImpl implements GameState {
             state.remove(position);
             return this;
         } 
-    } 
+    }
+
 }
