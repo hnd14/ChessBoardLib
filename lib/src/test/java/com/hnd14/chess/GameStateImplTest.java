@@ -9,10 +9,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.hnd14.chess.piece.PieceTypeManager;
-import com.hnd14.chess.piece.Side;
 import com.hnd14.chess.position.File;
 import com.hnd14.chess.position.Rank;
 import com.hnd14.game.Position;
+import com.hnd14.chess.piece.ChessSide;
 
 class ChessGameStateImplTest {
     static PieceTypeManager pieceTypeManager = new PieceTypeManager();
@@ -32,17 +32,17 @@ class ChessGameStateImplTest {
     void setup() {
         gameState = ChessGameStateImpl
             .builder()
-            .addPiece(new ChessPiece(pieceTypeManager.fromString("N"), Side.BLACK), c3)
-            .addPiece(new ChessPiece(pieceTypeManager.fromString("B"), Side.WHITE), d4)
+            .addPiece(new ChessPiece(pieceTypeManager.fromString("N"), ChessSide.BLACK), c3)
+            .addPiece(new ChessPiece(pieceTypeManager.fromString("B"), ChessSide.WHITE), d4)
             .build();
     }
     
     @Test
     void testBuilderAddPiece_isOccupied_getPiece() {
         assertTrue(gameState.isOccupied(c3));
-        assertEquals(new ChessPiece(pieceTypeManager.fromString("N"), Side.BLACK), gameState.getPiece(c3));
+        assertEquals(new ChessPiece(pieceTypeManager.fromString("N"), ChessSide.BLACK), gameState.getPiece(c3));
         assertTrue(gameState.isOccupied(d4));
-        assertEquals(new ChessPiece(pieceTypeManager.fromString("B"), Side.WHITE), gameState.getPiece(d4));
+        assertEquals(new ChessPiece(pieceTypeManager.fromString("B"), ChessSide.WHITE), gameState.getPiece(d4));
         assertFalse(gameState.isOccupied(h8));
         assertEquals(null, gameState.getPiece(h8));
     }    
@@ -51,13 +51,13 @@ class ChessGameStateImplTest {
     void testToBuilder_removePiece() {
         ChessGameStateImpl newGameState = gameState.toBuilder()
             .removePiece(c3)
-            .addPiece(new ChessPiece(pieceTypeManager.fromString("B"), Side.BLACK), h8)
+            .addPiece(new ChessPiece(pieceTypeManager.fromString("B"), ChessSide.BLACK), h8)
             .build();
         
         assertTrue(gameState.isOccupied(c3));
-        assertEquals(new ChessPiece(pieceTypeManager.fromString("N"), Side.BLACK), gameState.getPiece(c3));
+        assertEquals(new ChessPiece(pieceTypeManager.fromString("N"), ChessSide.BLACK), gameState.getPiece(c3));
         assertTrue(gameState.isOccupied(d4));
-        assertEquals(new ChessPiece(pieceTypeManager.fromString("B"), Side.WHITE), gameState.getPiece(d4));
+        assertEquals(new ChessPiece(pieceTypeManager.fromString("B"), ChessSide.WHITE), gameState.getPiece(d4));
         assertFalse(gameState.isOccupied(h8));
         assertEquals(null, gameState.getPiece(h8));
 
@@ -65,8 +65,8 @@ class ChessGameStateImplTest {
         assertFalse(newGameState.isOccupied(c3));
         assertEquals(null, newGameState.getPiece(c3));
         assertTrue(newGameState.isOccupied(d4));
-        assertEquals(new ChessPiece(pieceTypeManager.fromString("B"), Side.WHITE), newGameState.getPiece(d4));
+        assertEquals(new ChessPiece(pieceTypeManager.fromString("B"), ChessSide.WHITE), newGameState.getPiece(d4));
         assertTrue(newGameState.isOccupied(h8));
-        assertEquals(new ChessPiece(pieceTypeManager.fromString("B"), Side.BLACK), newGameState.getPiece(h8));
+        assertEquals(new ChessPiece(pieceTypeManager.fromString("B"), ChessSide.BLACK), newGameState.getPiece(h8));
     }
 }
