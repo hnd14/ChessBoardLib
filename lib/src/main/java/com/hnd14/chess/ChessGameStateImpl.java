@@ -4,10 +4,12 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.hnd14.game.GameState;
+import com.hnd14.game.Piece;
+import com.hnd14.game.Position;
 
-public class GameStateImpl implements GameState {
-    private Map<Position, ChessPiece> state;
-    private GameStateImpl(Map<Position, ChessPiece> state) {
+public class ChessGameStateImpl implements GameState {
+    private Map<Position, Piece> state;
+    private ChessGameStateImpl(Map<Position, Piece> state) {
         this.state = state;
     }
 
@@ -17,9 +19,14 @@ public class GameStateImpl implements GameState {
     }
 
     @Override
-    public ChessPiece getPiece(Position position) {
+    public Piece getPiece(Position position) {
         return state.get(position);
     }
+
+    @Override
+    public boolean hasPosition(Position position) {
+        return position instanceof ChessPosition;
+    } 
 
     public static GameStateBuilder builder() {
         return new GameStateBuilder();
@@ -28,22 +35,22 @@ public class GameStateImpl implements GameState {
     public GameStateBuilder toBuilder() {
         return new GameStateBuilder(state);
     }
-
+    
     public static class GameStateBuilder {
-        private Map<Position, ChessPiece> state = new ConcurrentHashMap<>();
+        private Map<Position, Piece> state = new ConcurrentHashMap<>();
 
         private GameStateBuilder() {    
         }
 
-        private GameStateBuilder(Map<Position, ChessPiece> state) {
+        private GameStateBuilder(Map<Position, Piece> state) {
             this.state = new ConcurrentHashMap<>(state);
         }
 
-        public GameStateImpl build() {
-            return new GameStateImpl(state);
+        public ChessGameStateImpl build() {
+            return new ChessGameStateImpl(state);
         }
 
-        public GameStateBuilder addPiece(ChessPiece piece, Position position) {
+        public GameStateBuilder addPiece(Piece piece, Position position) {
             state.put(position, piece);
             return this;
         } 
@@ -52,5 +59,6 @@ public class GameStateImpl implements GameState {
             state.remove(position);
             return this;
         } 
-    } 
+    }
+
 }
