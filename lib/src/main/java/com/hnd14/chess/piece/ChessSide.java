@@ -1,6 +1,6 @@
 package com.hnd14.chess.piece;
 
-import com.hnd14.game.Side;
+import com.hnd14.game.piece.Side;
 
 import lombok.Getter;
 

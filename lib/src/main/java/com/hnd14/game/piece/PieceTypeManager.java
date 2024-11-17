@@ -1,4 +1,4 @@
-package com.hnd14.chess.piece;
+package com.hnd14.game.piece;
 
 import java.util.Map;
 import java.util.Optional;
