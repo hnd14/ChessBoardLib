@@ -21,11 +21,11 @@ public class AggregateMoveGenerator implements MoveGenerator {
         return result;
     }
 
-    public AggregateMoveGeneratorBuilder builder() {
+    public static AggregateMoveGeneratorBuilder builder() {
         return new AggregateMoveGeneratorBuilder();
     }
     
-    public class AggregateMoveGeneratorBuilder {
+    public static class AggregateMoveGeneratorBuilder {
         private List<MoveGenerator> generators;
 
         private AggregateMoveGeneratorBuilder() {
