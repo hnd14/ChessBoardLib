@@ -17,7 +17,7 @@ import com.hnd14.game.Piece;
 import com.hnd14.game.Position;
 import com.hnd14.game.piece.PieceTypeManager;
 
-public class ChessMoveGeneratorTest {
+class ChessMoveGeneratorTest {
     private static PieceTypeManager pieceTypeManager = new PieceTypeManager();
     private static GameState gameState;
     private static final Position C3 = ChessPosition.builder().file(File.C).rank(Rank.THIRD).build();
@@ -62,7 +62,7 @@ public class ChessMoveGeneratorTest {
             assertEquals(D4, move.start());
             assertEquals(new Piece(pieceTypeManager.fromString("Bishop"), ChessSide.WHITE), move.piece());
             assertTrue(expectedEnd.contains(move.end()));
-        });;
+        });
     }
 
     @Test
@@ -95,7 +95,7 @@ public class ChessMoveGeneratorTest {
             assertEquals(C3, move.start());
             assertEquals(new Piece(pieceTypeManager.fromString("Queen"), ChessSide.BLACK), move.piece());
             assertTrue(expectedEnd.contains(move.end()));
-        });;
+        });
     }
 
     @Test
@@ -122,6 +122,6 @@ public class ChessMoveGeneratorTest {
             assertEquals(D3, move.start());
             assertEquals(new Piece(pieceTypeManager.fromString("Rook"), ChessSide.BLACK), move.piece());
             assertTrue(expectedEnd.contains(move.end()));
-        });;
+        });
     }
 }

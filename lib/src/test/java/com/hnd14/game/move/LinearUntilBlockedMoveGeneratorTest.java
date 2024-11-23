@@ -22,7 +22,7 @@ import com.hnd14.game.piece.PieceTypeManager;
 import com.hnd14.game.piece.Side;
 import com.hnd14.game.position.PositionSingleTransformer;
 
-public class LinearUntilBlockedMoveGeneratorTest {
+class LinearUntilBlockedMoveGeneratorTest {
     record SamplePosition(int x, int y) implements Position{
     }
 
@@ -85,15 +85,18 @@ public class LinearUntilBlockedMoveGeneratorTest {
 
     @Test
     void testGenerateMoveOnEmptySpace() {
+        GameState gameState = new SampleGameState(Map.of());
+        Position start = new SamplePosition(2, 2);
         assertThrows(NoPieceAtPositionException.class, 
-        () -> moveGenerator.generateMove(new SampleGameState(Map.of()), new SamplePosition(2, 2)));
+        () -> moveGenerator.generateMove(gameState, start));
     }
 
     @Test
     void testGenerateMoveOnPositionOutOfBoard() {
-        
+        GameState gameState = new SampleGameState(Map.of());
+        Position start = new SamplePosition(0, 0);
         assertThrows(PositionNotExistsException.class, 
-        () -> moveGenerator.generateMove(new SampleGameState(Map.of()), new SamplePosition(0, 0)));
+        () -> moveGenerator.generateMove(gameState, start));
     }
 
     @Test 

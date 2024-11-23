@@ -7,6 +7,9 @@ import com.hnd14.game.move.MoveGenerator;
 import com.hnd14.game.position.PositionSingleTransformer;
 
 public class ChessMoveGenerator {
+    private ChessMoveGenerator() {
+        
+    }
     private static PositionSingleTransformer chessPositionTransformer(int fileValue, int rankValue) {
         return SimpleChessPositionTransformer.builder()
             .fileValue(fileValue)

@@ -11,9 +11,10 @@ import com.hnd14.game.Piece;
 import com.hnd14.game.Position;
 import com.hnd14.game.exception.InvalidPositionTypeException;
 
-public class ChessMoveTest {
+class ChessMoveTest {
     private ChessPosition c3 = ChessPosition.builder().file(File.C).rank(Rank.THIRD).build();
     private ChessPosition c4 = ChessPosition.builder().file(File.C).rank(Rank.FOURTH).build();
+    private Position other = new Position() {};
     private Piece piece = new Piece(null, null);
 
     @Test
@@ -21,9 +22,9 @@ public class ChessMoveTest {
         assertThrows(InvalidPositionTypeException.class, 
             () -> ChessMove.createMove(c3, c3, piece));
         assertThrows(InvalidPositionTypeException.class, 
-            () -> ChessMove.createMove(new Position() {}, c3, piece));
+            () -> ChessMove.createMove(other, c3, piece));
         assertThrows(InvalidPositionTypeException.class, 
-            () -> ChessMove.createMove(c3, new Position() {}, piece));
+            () -> ChessMove.createMove(c3, other, piece));
         assertEquals(ChessMove.builder().start(c3).end(c4).piece(piece).build(), ChessMove.createMove(c3, c4, piece));
     }
 
