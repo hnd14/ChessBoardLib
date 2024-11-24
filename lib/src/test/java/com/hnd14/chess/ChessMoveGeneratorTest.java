@@ -22,18 +22,24 @@ class ChessMoveGeneratorTest {
     private static GameState gameState;
     private static final Position C3 = ChessPosition.builder().file(File.C).rank(Rank.THIRD).build();
     private static final Position C5 = ChessPosition.builder().file(File.C).rank(Rank.FIFTH).build();
+    private static final Position D5 = ChessPosition.builder().file(File.D).rank(Rank.FIFTH).build();
     private static final Position D3 = ChessPosition.builder().file(File.D).rank(Rank.THIRD).build();
     private static final Position D4 = ChessPosition.builder().file(File.D).rank(Rank.FOURTH).build();
+    private static final Position E4 = ChessPosition.builder().file(File.E).rank(Rank.FOURTH).build();
     @BeforeAll
     static void setup() {
         pieceTypeManager.register("Rook");
         pieceTypeManager.register("Queen");
         pieceTypeManager.register("Bishop");
+        pieceTypeManager.register("Knight");
+        pieceTypeManager.register("King");
         gameState = ChessGameStateImpl.builder()
             .addPiece(new Piece(pieceTypeManager.fromString("Rook"), ChessSide.BLACK), D3)
             .addPiece(new Piece(pieceTypeManager.fromString("Queen"), ChessSide.BLACK), C3)
             .addPiece(new Piece(pieceTypeManager.fromString("Bishop"), ChessSide.WHITE), D4)
             .addPiece(new Piece(pieceTypeManager.fromString("Queen"), ChessSide.WHITE), C5)
+            .addPiece(new Piece(pieceTypeManager.fromString("King"), ChessSide.WHITE), D5)
+            .addPiece(new Piece(pieceTypeManager.fromString("Knight"), ChessSide.BLACK), E4)
             .build();
     }
 
@@ -121,6 +127,59 @@ class ChessMoveGeneratorTest {
         .forEach(move -> {
             assertEquals(D3, move.start());
             assertEquals(new Piece(pieceTypeManager.fromString("Rook"), ChessSide.BLACK), move.piece());
+            assertTrue(expectedEnd.contains(move.end()));
+        });
+    }
+
+    @Test
+    void testKingMoveGenerator() {
+        List<Position> expectedEnd = List.of(
+            new ChessPosition(Rank.SIXTH, File.C),
+            new ChessPosition(Rank.SIXTH, File.D),
+            new ChessPosition(Rank.SIXTH, File.E),
+            new ChessPosition(Rank.FIFTH, File.E),
+            new ChessPosition(Rank.FOURTH, File.C),
+            new ChessPosition(Rank.FOURTH, File.E)
+        ); 
+        var result = ChessMoveGenerator.kingMoveGenerator().generateMove(gameState, D5);
+
+        assertEquals(expectedEnd.size(), result.size());
+
+        result.stream()
+        .map(move -> {
+            assertInstanceOf(ChessMove.class, move);
+            return (ChessMove) move;
+        })
+        .forEach(move -> {
+            assertEquals(D5, move.start());
+            assertEquals(new Piece(pieceTypeManager.fromString("King"), ChessSide.WHITE), move.piece());
+            assertTrue(expectedEnd.contains(move.end()));
+        });
+    }
+
+    @Test
+    void testKnightMoveGenerator() {
+        List<Position> expectedEnd = List.of(
+            new ChessPosition(Rank.SIXTH, File.D),
+            new ChessPosition(Rank.SIXTH, File.F),
+            new ChessPosition(Rank.FIFTH, File.C),
+            new ChessPosition(Rank.FIFTH, File.G),
+            new ChessPosition(Rank.THIRD, File.G),
+            new ChessPosition(Rank.SECOND, File.D),
+            new ChessPosition(Rank.SECOND, File.F)
+        ); 
+        var result = ChessMoveGenerator.knightMoveGenerator().generateMove(gameState, E4);
+
+        assertEquals(expectedEnd.size(), result.size());
+
+        result.stream()
+        .map(move -> {
+            assertInstanceOf(ChessMove.class, move);
+            return (ChessMove) move;
+        })
+        .forEach(move -> {
+            assertEquals(E4, move.start());
+            assertEquals(new Piece(pieceTypeManager.fromString("Knight"), ChessSide.BLACK), move.piece());
             assertTrue(expectedEnd.contains(move.end()));
         });
     }

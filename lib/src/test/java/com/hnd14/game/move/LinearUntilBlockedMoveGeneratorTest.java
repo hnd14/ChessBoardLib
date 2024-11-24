@@ -2,7 +2,6 @@ package com.hnd14.game.move;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -12,59 +11,13 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.hnd14.game.GameState;
-import com.hnd14.game.Move;
 import com.hnd14.game.Piece;
 import com.hnd14.game.Position;
-import com.hnd14.game.exception.NoPieceAtPositionException;
 import com.hnd14.game.exception.PositionCannotBeTransformedException;
-import com.hnd14.game.exception.PositionNotExistsException;
 import com.hnd14.game.piece.PieceTypeManager;
-import com.hnd14.game.piece.Side;
 import com.hnd14.game.position.PositionSingleTransformer;
 
-class LinearUntilBlockedMoveGeneratorTest {
-    record SamplePosition(int x, int y) implements Position{
-    }
-
-
-
-    public record SampleMove(Position start, Position end, Piece piece) implements Move {
-    }
-
-    class SampleGameState implements GameState {
-        private Map<SamplePosition, Piece> state;
-
-        public SampleGameState(Map<SamplePosition, Piece> state) {
-            this.state = state;
-        }
-
-        @Override
-        public boolean hasPosition(Position position) {
-            return (position instanceof SamplePosition samplePosition) 
-                && samplePosition.x() < 10 && samplePosition.x() > 0
-                && samplePosition.y() < 10 && samplePosition.y() > 0;
-        }
-
-        @Override
-        public boolean isOccupied(Position position) {
-            return state.containsKey(position);
-        }
-
-        @Override
-        public Piece getPiece(Position position) {
-            return state.get(position);
-        }
-    }
-    public enum SampleSide implements Side {
-        ONE, TWO;
-
-        @Override
-        public boolean isAllyWith(Side side) {
-            return this.equals(side);
-        }
-        
-    }
-
+class LinearUntilBlockedMoveGeneratorTest extends SampleGameElementsConfig{
 
     static PieceTypeManager pieceTypeManager = new PieceTypeManager();
     static LinearUntilBlockedMoveGenerator moveGenerator;
@@ -81,22 +34,6 @@ class LinearUntilBlockedMoveGeneratorTest {
             }
         };
         moveGenerator = new LinearUntilBlockedMoveGenerator(transformer, SampleMove::new);
-    }
-
-    @Test
-    void testGenerateMoveOnEmptySpace() {
-        GameState gameState = new SampleGameState(Map.of());
-        Position start = new SamplePosition(2, 2);
-        assertThrows(NoPieceAtPositionException.class, 
-        () -> moveGenerator.generateMove(gameState, start));
-    }
-
-    @Test
-    void testGenerateMoveOnPositionOutOfBoard() {
-        GameState gameState = new SampleGameState(Map.of());
-        Position start = new SamplePosition(0, 0);
-        assertThrows(PositionNotExistsException.class, 
-        () -> moveGenerator.generateMove(gameState, start));
     }
 
     @Test 
