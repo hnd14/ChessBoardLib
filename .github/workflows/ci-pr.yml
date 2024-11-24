@@ -24,6 +24,9 @@ jobs:
           
       - name: Make Gradle Wrapper Executable
         run: chmod +x gradlew
+
+      - name: Unit test
+        run: ./gradlew test
   
       - name: Build and analyze
         env:
