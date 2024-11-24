@@ -13,7 +13,7 @@ import com.hnd14.game.Position;
 import com.hnd14.game.exception.PositionCannotBeTransformedException;
 import com.hnd14.game.position.PositionSingleTransformer;
 
-public class MoveAndAttackMoveGeneratorTest extends SampleGameElementsConfig {
+class MoveAndAttackMoveGeneratorTest extends SampleGameElementsConfig {
     PositionSingleTransformer transformer = new PositionSingleTransformer() {
         public Position transform(Position position) {
             if (position instanceof SamplePosition castedPosition)

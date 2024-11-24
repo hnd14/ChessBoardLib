@@ -9,7 +9,7 @@ import com.hnd14.game.exception.PositionNotExistsException;
 import com.hnd14.game.position.PositionSingleTransformer;
 
 public class MoveGeneratorUtil {
-    private MoveGeneratorUtil(){};
+    private MoveGeneratorUtil(){}
     static Position applyTransformer (PositionSingleTransformer transformer, GameState gameState, Position position) {
         if (!(gameState.hasPosition(position))) {
             return null;

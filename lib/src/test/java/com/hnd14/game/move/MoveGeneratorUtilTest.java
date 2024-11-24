@@ -17,7 +17,7 @@ import com.hnd14.game.exception.PositionCannotBeTransformedException;
 import com.hnd14.game.exception.PositionNotExistsException;
 import com.hnd14.game.position.PositionSingleTransformer;
 
-public class MoveGeneratorUtilTest extends SampleGameElementsConfig {
+class MoveGeneratorUtilTest extends SampleGameElementsConfig {
     @Test 
     void testApplyTransformer() {
         GameState gameState = new SampleGameState(Map.of());
