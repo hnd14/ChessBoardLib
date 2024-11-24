@@ -8,7 +8,6 @@ import com.hnd14.game.Move;
 import com.hnd14.game.Piece;
 import com.hnd14.game.Position;
 import com.hnd14.game.exception.NoPieceAtPositionException;
-import com.hnd14.game.exception.PositionCannotBeTransformedException;
 import com.hnd14.game.exception.PositionNotExistsException;
 import com.hnd14.game.position.PositionSingleTransformer;
 
@@ -27,9 +26,9 @@ public class LinearUntilBlockedMoveGenerator implements MoveGenerator {
         if (!gameState.isOccupied(start)) {
             throw new NoPieceAtPositionException(start);
         }
-        Piece performingPiece = gameState.getPiece(start);
+        Piece performingPiece = MoveGeneratorUtil.getPerformingPiece(gameState, start);
         List<Move> result = new LinkedList<>();
-        Position current = nextPosition(gameState, start);   
+        Position current = MoveGeneratorUtil.applyTransformer(direction, gameState, start);   
         while (current != null) {
             if (!gameState.isOccupied(current) || !gameState.getPiece(current).side().isAllyWith(performingPiece.side())){
                 result.add(moveFactory.createMove(start, current, performingPiece));
@@ -37,22 +36,8 @@ public class LinearUntilBlockedMoveGenerator implements MoveGenerator {
             if (gameState.isOccupied(current)) {
                 current = null;
             }
-            current = nextPosition(gameState, current);
+            current = MoveGeneratorUtil.applyTransformer(direction, gameState, current);
         }    
         return result;
     }
-
-    private Position nextPosition(GameState gameState, Position position) {
-        try {
-            Position nextPosition = direction.transform(position); 
-            if (gameState.hasPosition(nextPosition)){
-                return nextPosition;
-            }
-            return null;
-        } 
-        catch(PositionCannotBeTransformedException e) {
-            return null;
-        }
-    }
-    
 }
