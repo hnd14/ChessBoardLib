@@ -1,5 +1,7 @@
 package com.hnd14.chess;
 
+import com.hnd14.chess.piece.ChessSide;
+import com.hnd14.chess.position.Rank;
 import com.hnd14.chess.position.SimpleChessPositionTransformer;
 import com.hnd14.game.GameState;
 import com.hnd14.game.Piece;
@@ -30,8 +32,25 @@ public class ChessMoveGenerator {
         return new MoveAndAttackMoveGenerator(chessPositionTransformer(fileValue, rankValue), ChessMove::createMove) {
             @Override
             protected boolean requirements(GameState gameState, Position start, Position target, Piece performingPiece) {
-                return !gameState.isOccupied(target) || !gameState.getPiece(target).side()
-                    .isAllyWith(performingPiece.side());
+                return !gameState.isOccupied(target) || !gameState.getPiece(target).side().isAllyWith(performingPiece.side());
+            }
+        };
+    }
+
+    private static MoveGenerator moveToEmptySpaceGenerator(int fileValue, int rankValue) {
+        return new MoveAndAttackMoveGenerator(chessPositionTransformer(fileValue, rankValue), ChessMove::createMove) {
+            @Override
+            protected boolean requirements(GameState gameState, Position start, Position target, Piece performingPiece) {
+                return !gameState.isOccupied(target);
+            }
+        };
+    }
+
+    private static MoveGenerator attackMoveGenerator(int fileValue, int rankValue) {
+        return new MoveAndAttackMoveGenerator(chessPositionTransformer(fileValue, rankValue), ChessMove::createMove) {
+            @Override
+            protected boolean requirements(GameState gameState, Position start, Position target, Piece performingPiece) {
+                return gameState.isOccupied(target) && !gameState.getPiece(target).side().isAllyWith(performingPiece.side());
             }
         };
     }
@@ -90,6 +109,65 @@ public class ChessMoveGenerator {
             .addGenerator(moveOrAttackGenerator(-1, 0))
             .addGenerator(moveOrAttackGenerator(1, 0))
             .addGenerator(moveOrAttackGenerator(0, -1))
+            .build();
+    }
+
+    private static MoveGenerator blackPawnTwoStepMoveGenerator() {
+        return new MoveAndAttackMoveGenerator(chessPositionTransformer(0, -2), ChessMove::createMove) {
+            @Override
+            protected boolean requirements(GameState gameState, Position start, Position target, Piece performingPiece) {
+                if (!(start instanceof ChessPosition castedPosition)){
+                    return false;
+                }
+                // The current position is not on rank seven
+                if (!castedPosition.rank().equals(Rank.SEVENTH)){
+                    return false;
+                }
+                // The position infront of it is occupied
+                if (gameState.isOccupied(castedPosition.toBuilder().rank(Rank.SIXTH).build())){
+                    return false;
+                }
+                return !gameState.isOccupied(target) && performingPiece.side().equals(ChessSide.BLACK);
+            }
+        };
+    }
+
+    static MoveGenerator blackPawnMoveGenerator() {
+        return AggregateMoveGenerator.builder()
+            .addGenerator(moveToEmptySpaceGenerator(0, -1))
+            .addGenerator(attackMoveGenerator(1, -1))
+            .addGenerator(attackMoveGenerator(-1, -1))
+            .addGenerator(blackPawnTwoStepMoveGenerator())
+            .build();
+    }
+
+    private static MoveGenerator whitePawnTwoStepMoveGenerator() {
+        return new MoveAndAttackMoveGenerator(chessPositionTransformer(0, 2), ChessMove::createMove) {
+            @Override
+            protected boolean requirements(GameState gameState, Position start, Position target, Piece performingPiece) {
+                if (!(start instanceof ChessPosition castedPosition)){
+                    return false;
+                }
+                // The current position is not on rank seven
+                if (!castedPosition.rank().equals(Rank.SECOND)){
+                    return false;
+                }
+                // The position infront of it is occupied
+                if (gameState.isOccupied(castedPosition.toBuilder().rank(Rank.THIRD).build())){
+                    return false;
+                }
+                return !gameState.isOccupied(target) && performingPiece.side().equals(ChessSide.WHITE);
+            }
+        };
+    }
+
+    
+    static MoveGenerator whitePawnMoveGenerator() {
+        return AggregateMoveGenerator.builder()
+            .addGenerator(moveToEmptySpaceGenerator(0, 1))
+            .addGenerator(attackMoveGenerator(1, 1))
+            .addGenerator(attackMoveGenerator(-1, 1))
+            .addGenerator(whitePawnTwoStepMoveGenerator())
             .build();
     }
 }
