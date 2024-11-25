@@ -15,8 +15,9 @@ import com.hnd14.game.Move;
 import com.hnd14.game.Piece;
 import com.hnd14.game.Position;
 import com.hnd14.game.piece.PieceTypeManager;
+import com.hnd14.game.piece.PieceTypeManager.PieceType;
 
-public class MoveGeneratorRegistryTest {
+class MoveGeneratorRegistryTest {
     private static PieceTypeManager pieceTypeManager;
     private static MoveGenerator  moveGenerator = new MoveGenerator() {
         @Override
@@ -37,6 +38,7 @@ public class MoveGeneratorRegistryTest {
     }
     @Test
     void testGetMoveGeneratorRegistry() {
+        PieceType type1 = pieceTypeManager.fromString("T1");
         assertThrows(PieceTypeDoesNotExistException.class, 
             () -> moveGeneratorRegistry.getMoveGenerator("Type1"));
         assertThrows(PieceTypeDoesNotExistException.class, 
@@ -44,7 +46,7 @@ public class MoveGeneratorRegistryTest {
         assertThrows(PieceTypeDoesNotExistException.class, 
             () -> moveGeneratorRegistry.getMoveGenerator("T1"));
         assertThrows(PieceTypeDoesNotExistException.class, 
-            () -> moveGeneratorRegistry.getMoveGenerator(pieceTypeManager.fromString("T1")));
+            () -> moveGeneratorRegistry.getMoveGenerator(type1));
         assertThrows(PieceTypeDoesNotExistException.class, 
             () -> moveGeneratorRegistry.getMoveGenerator("Type3"));
         
