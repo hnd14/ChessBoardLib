@@ -132,7 +132,7 @@ public class ChessMoveGenerator {
         };
     }
 
-    static MoveGenerator blackPawnMoveGenerator() {
+    public static MoveGenerator blackPawnMoveGenerator() {
         return AggregateMoveGenerator.builder()
             .addGenerator(moveToEmptySpaceGenerator(0, -1))
             .addGenerator(attackMoveGenerator(1, -1))
@@ -162,7 +162,7 @@ public class ChessMoveGenerator {
     }
 
     
-    static MoveGenerator whitePawnMoveGenerator() {
+    public static MoveGenerator whitePawnMoveGenerator() {
         return AggregateMoveGenerator.builder()
             .addGenerator(moveToEmptySpaceGenerator(0, 1))
             .addGenerator(attackMoveGenerator(1, 1))
