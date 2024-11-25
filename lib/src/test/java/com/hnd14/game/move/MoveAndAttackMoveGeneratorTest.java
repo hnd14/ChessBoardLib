@@ -1,6 +1,7 @@
 package com.hnd14.game.move;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Map;
@@ -11,6 +12,7 @@ import com.hnd14.game.GameState;
 import com.hnd14.game.Piece;
 import com.hnd14.game.Position;
 import com.hnd14.game.exception.PositionCannotBeTransformedException;
+import com.hnd14.game.exception.PositionNotExistsException;
 import com.hnd14.game.position.PositionSingleTransformer;
 
 class MoveAndAttackMoveGeneratorTest extends SampleGameElementsConfig {
@@ -29,6 +31,16 @@ class MoveAndAttackMoveGeneratorTest extends SampleGameElementsConfig {
         }
     };
 
+    @Test 
+    void testCreateMoveFromPositionOutsideOfGameState() {
+        Piece piece = new Piece(null, SampleSide.ONE);
+        Position start = new SamplePosition(0, 0);
+        GameState gameState = new SampleGameState(
+            Map.of(new SamplePosition(2,2), piece));
+
+        assertThrows(PositionNotExistsException.class, 
+            () -> moveGenerator.generateMove(gameState, start, piece));
+    }
 
     @Test
     void testGenerateMove() {
@@ -41,9 +53,9 @@ class MoveAndAttackMoveGeneratorTest extends SampleGameElementsConfig {
                     pos2, piece,
                     pos3, piece));
 
-        var result1 = moveGenerator.generateMove(gameState, pos1);
-        var result2 = moveGenerator.generateMove(gameState, pos2);
-        var result3 = moveGenerator.generateMove(gameState, pos3);
+        var result1 = moveGenerator.generateMove(gameState, pos1, piece);
+        var result2 = moveGenerator.generateMove(gameState, pos2, piece);
+        var result3 = moveGenerator.generateMove(gameState, pos3, piece);
         var expectedMove1 = new SampleMove(pos1, new SamplePosition(2, 4), piece);
 
         // Can be moved

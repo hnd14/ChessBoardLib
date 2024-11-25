@@ -7,7 +7,6 @@ import com.hnd14.game.GameState;
 import com.hnd14.game.Move;
 import com.hnd14.game.Piece;
 import com.hnd14.game.Position;
-import com.hnd14.game.exception.NoPieceAtPositionException;
 import com.hnd14.game.exception.PositionNotExistsException;
 import com.hnd14.game.position.PositionSingleTransformer;
 
@@ -19,14 +18,10 @@ public class LinearUntilBlockedMoveGenerator implements MoveGenerator {
     private MoveFactory moveFactory;
 
     @Override   
-    public List<Move> generateMove(GameState gameState, Position start) {
+    public List<Move> generateMove(GameState gameState, Position start, Piece performingPiece) {
         if (!gameState.hasPosition(start)) {
             throw new PositionNotExistsException(start);
         }
-        if (!gameState.isOccupied(start)) {
-            throw new NoPieceAtPositionException(start);
-        }
-        Piece performingPiece = MoveGeneratorUtil.getPerformingPiece(gameState, start);
         List<Move> result = new LinkedList<>();
         Position current = MoveGeneratorUtil.applyTransformer(direction, gameState, start);   
         while (current != null) {

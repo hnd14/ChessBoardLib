@@ -45,6 +45,7 @@ class ChessMoveGeneratorTest {
 
     @Test
     void testBishopMoveGenerator() {
+        Piece whiteBishop = new Piece(pieceTypeManager.fromString("Bishop"), ChessSide.WHITE);
         List<Position> expectedEnd = List.of(
             new ChessPosition(Rank.FIFTH, File.E),
             new ChessPosition(Rank.SIXTH, File.F),
@@ -55,7 +56,7 @@ class ChessMoveGeneratorTest {
             new ChessPosition(Rank.SECOND, File.F),
             new ChessPosition(Rank.FIRST, File.G)
         ); 
-        var result = ChessMoveGenerator.bishopMoveGenerator().generateMove(gameState, D4);
+        var result = ChessMoveGenerator.bishopMoveGenerator().generateMove(gameState, D4, whiteBishop);
 
         assertEquals(expectedEnd.size(), result.size());
 
@@ -73,6 +74,7 @@ class ChessMoveGeneratorTest {
 
     @Test
     void testQueenMoveGenerator() {
+        Piece blackQueen = new Piece(pieceTypeManager.fromString("Queen"), ChessSide.BLACK);
         List<Position> expectedEnd = List.of(
             new ChessPosition(Rank.FIRST, File.A),
             new ChessPosition(Rank.FIRST, File.C),
@@ -88,7 +90,7 @@ class ChessMoveGeneratorTest {
             new ChessPosition(Rank.FIFTH, File.A),
             C5
         ); 
-        var result = ChessMoveGenerator.queenMoveGenerator().generateMove(gameState, C3);
+        var result = ChessMoveGenerator.queenMoveGenerator().generateMove(gameState, C3, blackQueen);
 
         assertEquals(expectedEnd.size(), result.size());
 
@@ -106,6 +108,7 @@ class ChessMoveGeneratorTest {
 
     @Test
     void testRookMoveGenerator() {
+        Piece blackRook = new Piece(pieceTypeManager.fromString("Rook"), ChessSide.BLACK);
         List<Position> expectedEnd = List.of(
             new ChessPosition(Rank.FIRST, File.D),
             new ChessPosition(Rank.SECOND, File.D),
@@ -115,7 +118,7 @@ class ChessMoveGeneratorTest {
             new ChessPosition(Rank.THIRD, File.G),
             new ChessPosition(Rank.THIRD, File.H)
         ); 
-        var result = ChessMoveGenerator.rookMoveGenerator().generateMove(gameState, D3);
+        var result = ChessMoveGenerator.rookMoveGenerator().generateMove(gameState, D3, blackRook);
 
         assertEquals(expectedEnd.size(), result.size());
 
@@ -133,6 +136,7 @@ class ChessMoveGeneratorTest {
 
     @Test
     void testKingMoveGenerator() {
+        Piece whiteKing = new Piece(pieceTypeManager.fromString("King"), ChessSide.WHITE);
         List<Position> expectedEnd = List.of(
             new ChessPosition(Rank.SIXTH, File.C),
             new ChessPosition(Rank.SIXTH, File.D),
@@ -141,7 +145,7 @@ class ChessMoveGeneratorTest {
             new ChessPosition(Rank.FOURTH, File.C),
             new ChessPosition(Rank.FOURTH, File.E)
         ); 
-        var result = ChessMoveGenerator.kingMoveGenerator().generateMove(gameState, D5);
+        var result = ChessMoveGenerator.kingMoveGenerator().generateMove(gameState, D5, whiteKing);
 
         assertEquals(expectedEnd.size(), result.size());
 
@@ -159,6 +163,7 @@ class ChessMoveGeneratorTest {
 
     @Test
     void testKnightMoveGenerator() {
+        Piece blackKnight = new Piece(pieceTypeManager.fromString("Knight"), ChessSide.BLACK);
         List<Position> expectedEnd = List.of(
             new ChessPosition(Rank.SIXTH, File.D),
             new ChessPosition(Rank.SIXTH, File.F),
@@ -168,7 +173,7 @@ class ChessMoveGeneratorTest {
             new ChessPosition(Rank.SECOND, File.D),
             new ChessPosition(Rank.SECOND, File.F)
         ); 
-        var result = ChessMoveGenerator.knightMoveGenerator().generateMove(gameState, E4);
+        var result = ChessMoveGenerator.knightMoveGenerator().generateMove(gameState, E4, blackKnight);
 
         assertEquals(expectedEnd.size(), result.size());
 
