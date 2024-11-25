@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.hnd14.game.GameState;
 import com.hnd14.game.Move;
+import com.hnd14.game.Piece;
 import com.hnd14.game.Position;
 
 import lombok.AllArgsConstructor;
@@ -14,10 +15,10 @@ public class AggregateMoveGenerator implements MoveGenerator {
     private List<MoveGenerator> generators;
 
     @Override
-    public List<Move> generateMove(GameState gameState, Position start) {
+    public List<Move> generateMove(GameState gameState, Position start, Piece performingPiece) {
         List<Move> result = new LinkedList<>();
         generators.stream()
-            .forEach(generator -> result.addAll(generator.generateMove(gameState, start)));
+            .forEach(generator -> result.addAll(generator.generateMove(gameState, start, performingPiece)));
         return result;
     }
 
